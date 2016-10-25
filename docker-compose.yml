@@ -1,0 +1,26 @@
+version: '2'
+services:
+
+ jenkins-slave:
+  container_name: jenkins-slave
+  build: .
+  image: atsnantes/adop-jenkins-dev:0.1.4
+  privileged: true
+  environment:
+    SLAVE_LABELS: "aws ldap java8 docker"
+    SWARM_PASSWORD: ${PASSWORD_JENKINS}
+    SLAVE_EXECUTORS: ${SLAVE_EXECUTORS}
+    INITIAL_ADMIN_USER: ${INITIAL_ADMIN_USER}
+    INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD_PLAIN}
+  volumes:
+    - jenkins_slave_home:/workspace
+    - /var/run/docker.sock:/var/run/docker.sock
+    
+volumes:
+  jenkins_slave_home:
+    driver: local
+    
+networks:
+  default:
+    external:
+      name: local_network

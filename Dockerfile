@@ -32,9 +32,9 @@ RUN yum install -y which \
 RUN pip install awscli==1.10.19
 
 # Docker versions Env Variables
-ENV DOCKER_ENGINE_VERSION=1.10.3-1.el7.centos
-ENV DOCKER_COMPOSE_VERSION=1.6.0
-ENV DOCKER_MACHINE_VERSION=v0.6.0
+ENV DOCKER_ENGINE_VERSION=1.12.0-1.el7.centos
+ENV DOCKER_COMPOSE_VERSION=1.8.0
+ENV DOCKER_MACHINE_VERSION=v0.8.0
 
 RUN curl -fsSL https://get.docker.com/ | sed "s/docker-engine/docker-engine-${DOCKER_ENGINE_VERSION}/" | sh
 
@@ -53,7 +53,7 @@ RUN wget -q --no-check-certificate --directory-prefix=/tmp \
                 rm -rf /tmp/* && rm -rf /var/log/*
 
 # Make Jenkins a slave by installing swarm-client
-RUN curl -s -o /bin/swarm-client.jar -k http://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.0/swarm-client-2.0-jar-with-dependencies.jar
+RUN curl -s -o /bin/swarm-client.jar -k http://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/2.2/swarm-client-2.2-jar-with-dependencies.jar
 
 # Start Swarm-Client
 CMD java -jar /bin/swarm-client.jar -executors ${SLAVE_EXECUTORS} -description "${SLAVE_DESCRIPTION}" -master ${SWARM_MASTER} -username ${SWARM_USER} -password ${SWARM_PASSWORD} -name "${SLAVE_NAME}" -labels "${SLAVE_LABELS}" -mode ${SLAVE_MODE}
